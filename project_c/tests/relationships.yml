@@ -1,0 +1,20 @@
+version: 2
+
+models:
+  - name: dim_region
+
+    columns:
+      - name: geo_id
+        tests:
+          - unique
+          - not_null
+
+  - name: int_sales_metrics
+
+    columns:
+      - name: geo_id
+        tests:
+          - relationships:
+              arguments:
+                to: ref('dim_region')
+                field: geo_id

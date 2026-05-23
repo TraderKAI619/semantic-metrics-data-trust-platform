@@ -1,0 +1,26 @@
+version: 2
+
+sources:
+  - name: analytics_dev
+    database: semantic-metrics-platform
+    schema: analytics_dev
+
+    tables:
+      - name: fact_sales
+
+        columns:
+          - name: order_date
+            tests:
+              - not_null
+
+          - name: geo_id
+            tests:
+              - not_null
+
+          - name: product_id
+            tests:
+              - not_null
+
+          - name: revenue_jpy
+            tests:
+              - not_null

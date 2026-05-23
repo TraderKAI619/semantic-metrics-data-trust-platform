@@ -1,0 +1,14 @@
+version: 2
+
+models:
+  - name: mart_daily_revenue
+
+    columns:
+      - name: order_date
+        tests:
+          - unique
+          - not_null
+
+      - name: daily_revenue
+        tests:
+          - not_null
