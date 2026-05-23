@@ -1,0 +1,52 @@
+name: dbt CI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  dbt-run:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dbt BigQuery
+        run: |
+          pip install dbt-bigquery
+
+      - name: Authenticate GCP
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: '${{ secrets.GCP_SERVICE_ACCOUNT }}'
+
+      - name: Create profiles.yml
+        run: |
+          mkdir -p ~/.dbt
+
+          cat > ~/.dbt/profiles.yml <<EOF
+          project_c:
+            target: dev
+            outputs:
+              dev:
+                type: bigquery
+                method: oauth
+                project: semantic-metrics-platform
+                dataset: analytics_dev
+                threads: 4
+                location: US
+          EOF
+
+      - name: Run dbt
+        working-directory: ./project_c
+        run: |
+          dbt deps
+          dbt run
+          dbt test
