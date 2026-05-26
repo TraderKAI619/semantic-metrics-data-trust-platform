@@ -55,3 +55,5 @@ Raw → Staging → Intermediate → Mart
 ## Goal
 
 Build a production-style semantic analytics layer with trusted business metrics.
+
+CI successfully connected.
